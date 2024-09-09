@@ -1,5 +1,7 @@
 package com.gotyou.demo.controller;
 
+import com.gotyou.demo.model.Test;
+import com.gotyou.demo.repository.TestRepository;
 import com.gotyou.demo.service.GeoApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,13 +23,18 @@ public class GeoApiController {
     @Autowired
     private GeoApiService geoApiService;
 
+    @Autowired
+    private TestRepository testRepository;
+
     @GetMapping("/fetch")
     public String fetchGeoLocation(HttpServletRequest request, Model model) {
         logger.info("Fetching geolocation data...");
         try {
             Locale userLocale = request.getLocale();
             String country = geoApiService.getUserCountry(userLocale);
-            logger.info("User country: " + country);
+            Test test = new Test();
+            test.setCountry(country);
+            testRepository.save(test);
             geoApiService.fetchAndSaveGeoLocation();
             model.addAttribute("message", "Geolocation data fetched and saved successfully!");
             logger.info("Geolocation data fetched and saved successfully.");

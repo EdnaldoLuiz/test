@@ -12,12 +12,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class GeoApiService {
 
     @Autowired
     private GeoLocationRepository geoLocationRepository;
+
+    public String getUserCountry(Locale userLocale) {
+        return userLocale.getCountry();
+    }
 
     public void fetchAndSaveGeoLocation() throws Exception {
         OkHttpClient client = new OkHttpClient();
